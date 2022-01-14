@@ -1,5 +1,5 @@
 ---
-title: "Building conceptual models with packageName"
+title: "Building conceptual models with redyarn"
 author: "Eliza Grames"
 output: rmarkdown::html_vignette
 vignette: >
@@ -52,7 +52,7 @@ Grames, E.M. 2021. New methods of evidence synthesis applied to systematically i
 
 Many studies test multiple hypotheses, and depending on the topic of the synthesis and what the conceptual model aims to represent, users may want to not extract all hypotheses from primary studies and instead focus their efforts to only relevant hypotheses. Just as with defining inclusion and exclusion criteria for a systematic review, users need to define which hypotheses or types of hypotheses will be extracted. How these are defined will depend on the topic of the synthesis. For fairly narrowly defined questions or those on emerging topics with few studies, users may want to not place any constraints and instead extract all hypotheses to get a sense of where the field is headed. Conversely, for very broad or well-studied topics, it may be necessary to restrict what types of hypotheses are extracted.
 
-In our example, we placed conceptual boundaries on the implied causal pathway for hypotheses we extracted and ignored any hypotheses outside those boundaries. Because we were interested in how patch size or distance to edge affect population density, we were not interested in any processes that resulted in patches of different size (e.g. "new logging operations &#10142; smaller patch sizes") or that result from population density (e.g. "dense population &#10142; heterozygosity") because they are outside the conceptual boundary for our model. For a hypothesis to be included, it had to either i) start with patch size or distance to edge in some way that could logically lead to population density directly or indirectly (e.g. "distance to edge &#10142; predation pressure" because we assume predators could affect population size), ii) end with population density and being in some way that could logically be traced back to patch size or distance to edge (e.g. "predator density &#10142; population density" because we assume logically that predators could covary with patch size), or iii) expand on potential intermediary processes (e.g. "predator density &#10142; reproductive success"). 
+In our example, we placed conceptual boundaries on the implied causal pathway for hypotheses we extracted and ignored any hypotheses outside those boundaries. Because we were interested in how patch size or distance to edge affect population density, we were not interested in any processes that resulted in patches of different size (e.g. "new logging operations &#10142; smaller patch sizes") or that result from population density (e.g. "dense population &#10142; heterozygosity") because they are outside the conceptual boundary for our model. For a hypothesis to be included, it had to either i) start with patch size or distance to edge in some way that could logically lead to population density directly or indirectly (e.g. "distance to edge &#10142; predation pressure" because we assume predators could affect population size), ii) end with population density and begin in some way that could logically be traced back to patch size or distance to edge (e.g. "predator density &#10142; population density" because we assume logically that predators could covary with patch size), or iii) expand on potential intermediary processes (e.g. "predator density &#10142; reproductive success"). 
 
 ```{r, out.width = "400px", echo=FALSE, fig.align='center'}
 knitr::include_graphics("../inst/images/Picture1.png")
@@ -72,13 +72,13 @@ The primary complication for extracting hypotheses from primary studies is that 
 
 Because extracting pathways depends on interpreting how authors have described primary studies, there is no single solution for how to extract implied causal pathways and each user could do it slightly differently. Indeed, the same user could extract pathways slightly differently each time when reading a study, however, the main hypothesis structure should generally be the same. We present several examples for the three main ways authors describe their hypotheses based on what we found in our case study; this is by no means an exhaustive list and is meant to be illustrative to help users think of how they might extract hypotheses for their own synthesis topics. In most cases, implied hypotheses will be sprinkled throughout the introduction, methods, and results sections.
 
-In our examples, we include a directed acyclic graph (DAG) representing the hypotheses from each study. It is not necessary to draw these for each study when implementing this approach. The only data that packageName requires for the paths is to have them represented with text, e.g. "patch size + distance to edge &#10142; bird abundance".
+In our examples, we include a directed acyclic graph (DAG) representing the hypotheses from each study. It is not necessary to draw these for each study when implementing this approach. The only data that redyarn requires for the paths is to have them represented with text, e.g. "patch size + distance to edge &#10142; bird abundance".
 
 #### Richmond et al. 2011
 
 >"Our study objectives were (i) to assess the relative importance of mammalian predator abundance, invertebrate prey biomass, and nest placement on nest success for Ovenbird and Wood Thrush; (ii) to determine which habitat features and matrix land-use types were most strongly associated with the abundance of mammalian nest predators and invertebrate prey in the forest fragments; and (iii) to compare the responses of species with different nesting strategies to changes in predation pressure, prey availability, and nest placement characteristics. We constructed a number of candidate models consisting of one to two predictor variables each to assess the relative importance of mammalian nest predator abundance, invertebrate prey biomass, and nest placement on nest success in Ovenbirds and Wood Thrush. ... Our study sites consisted of 12 mature, deciduous forest fragments ranging in size from 11 to 280.4 ha (mean = 46.5 ha)." (Richmond et al. 2011)
 
-From objective (i), we know that there are three processes or factors which the authors hypothesize influence nest success, so we can write the path: "mammalian predator abundance + invertebrate prey biomass + nest placement > nest success". Because the study is comparing forest fragments of different sizes, we can also add a path based on objective (ii): "forest fragment size &#10142; mammalian nest predator abundance + invertebrate prey". We ignore objective (iii) because it is comparing these processes across species, but is not introducing new processes.
+From objective (i), we know that there are three processes or factors which the authors hypothesize influence nest success, so we can write the path: "mammalian predator abundance + invertebrate prey biomass + nest placement  &#10142; nest success". Because the study is comparing forest fragments of different sizes, we can also add a path based on objective (ii): "forest fragment size &#10142; mammalian nest predator abundance + invertebrate prey". We ignore objective (iii) because it is comparing these processes across species, but is not introducing new processes.
 
 ```{r, out.width = "400px", echo=FALSE, fig.align='center'}
 knitr::include_graphics("../inst/images/Richmond2011.png")
@@ -143,7 +143,7 @@ knitr::include_graphics("../inst/images/Burke2001.png")
 
 At first glance, this study does not necessarily meet our inclusion criteria because it does not start with patch size or distance to edge, though it does end with bird abundance. It is unclear what 'landscape characteristics' are, however, so to find out what 'landscape characteristics' are and if they are related to patch size or distance to edge, we can check the methods section. 
 
->" We delineated forest remnants in which the plots were embedded and calculated the perimeter of each remnant (m) and total contiguous forested area (ha). We also measured the distance between each plot center and the nearest forest edge (m)." (Schneider and Miller 2014)
+>"We delineated forest remnants in which the plots were embedded and calculated the perimeter of each remnant (m) and total contiguous forested area (ha). We also measured the distance between each plot center and the nearest forest edge (m)." (Schneider and Miller 2014)
 
 Now, we know that: "distance to edge + patch size" are the 'landscape characteristics' so we can use these in place of that for the main pathway. We can ignore perimeter because it is not part of our conceptual boundaries. We can write the first question posed by the authors as: "invasive vegetation &#10142; avian community". The second question is outside the scope of our model because it is about comparing different species. Knowing what 'landscape characteristics' are now, we can write the third question as: "distance to edge + patch size + invasive species &#10142; avian community".
 
@@ -153,11 +153,11 @@ knitr::include_graphics("../inst/images/Schneider2014.png")
 
 # 4. Extract metadata
 
-It may be of interest to users to create multi-dimensional networks that include not just linked hypotheses, but also characteristics of the included studies. For example, users could extract study authors to do a concurrent bibliometric analysis, or whether or not a hypothesis was supported (note: vote-counting should be avoided as an alternative to meta-analysis, but may be useful as part of building a conceptual model). Users may also want to use study characteristics to subset studies and compare conceptual models built from different subtopics. In our case study, for example, we created different models based on the type of habitat surrounding a forest edge and for different species. Some metadata may also be useful for investigating trends, such as years of data collection, latitude or longitude where a study was conducted, or other scales. 
+It may be of interest to users to create multi-dimensional networks that include not just linked hypotheses, but also characteristics of the included studies. For example, users could extract study authors to do a concurrent bibliometric analysis, or whether or not a hypothesis was supported (note: vote-counting should be avoided as an alternative to meta-analysis, but may be useful as part of building a conceptual model). Users may also want to use study characteristics to subset studies and compare conceptual models built from different subtopics. In our case study (Grames 2021), for example, we created different models based on the type of habitat surrounding a forest edge and for different species. Some metadata may also be useful for investigating trends, such as years of data collection, latitude or longitude where a study was conducted, or other scales. 
 
 Note that this step is optional, but resulting networks are more interesting and additional analyses can be done with metadata that may covary with which hypotheses are studied. Users should consider what metadata they would like to use as covariates when designing their synthesis.
 
-The hypotheses and study metadata for our case study from Grames (2021) are pre-loaded in packageName as an example. We will load this dataset in with the code below so they are in our working environment, then look at the first few rows of the data. 
+The hypotheses and study metadata for our case study from Grames (2021) are pre-loaded in redyarn as an example. We will load this dataset in with the code below so they are in our working environment, then look at the first few rows of the data. 
 
 ```{r}
 load("../data/studies.rda")
@@ -170,7 +170,7 @@ Many authors use different terms to describe the same, or related, concepts and 
 
 For simplicity when presenting or interpreting a model, it can be valuable to collapse similar concepts and represent them with a single term, however, in many cases the distinctions do matter. For example, "nest success" (i.e. at least one chick fledged) and "number of fledglings" both represent "reproductive success" but may be influenced by different processes (e.g. predation may influence all or nothing nest success, but food availability may influence how many chicks fledge). It is best to preserve this distinction but not necessarily to represent it in the model where the more generic 'reproductive success' term may make the model more interpretable.
 
-Rather than having to choose between a more detailed model or one with collapsed concepts, we suggest that users adopt a flexible approach using an n-level ontology. In the ontology, layer n consists of exact synonyms or antonyms, and higher order levels (e.g. n-1) are conceptual groupings of those synonyms. To continue with the nest success theme, We could imagine a 2-level ontology where level 1 contains the group 'reproductive success' within which are 'nest success' and 'number of fledglings'; level 2 is nested within level 1 and contains synonyms for 'nest success' (e.g. 'nest failure') and 'number of fledglings' (e.g. 'number of fledged young'). 
+Rather than having to choose between a more detailed model or one with collapsed concepts, we suggest that users adopt a flexible approach using an n-level ontology. In the ontology, layer n consists of exact synonyms or antonyms, and higher order levels (e.g. n-1) are conceptual groupings of those synonyms. To continue with the nest success theme, we could imagine a 2-level ontology where level 1 contains the group 'reproductive success' within which are 'nest success' and 'number of fledglings'; level 2 is nested within level 1 and contains synonyms for 'nest success' (e.g. 'nest failure') and 'number of fledglings' (e.g. 'number of fledged young'). This ontology can then be used to reclassify pathways and generate models at different levels of specificity.
 
 ```{r, echo=F}
 knitr::kable(data.frame(Concept=c("Reproductive success", "", "", ""), 
@@ -180,14 +180,14 @@ knitr::kable(data.frame(Concept=c("Reproductive success", "", "", ""),
 
 Although users could create the higher levels of an ontology in advance based on knowledge of the system, inevitably many terms will be omitted from the synonym list. We recommend completing path extraction before creating the ontology, and using the list of terms extracted from the texts as the basis for the ontology.
 
-In our case study (Grames 2021), we only created an ontology for synonyms or related terms and did not group them into higher levels. 
+In our case study (Grames 2021), we only created an ontology for synonyms or related terms and did not group them into higher levels.
 
 ```{r}
 load("../data/ontology.rda")
 knitr::kable(head(ontology, 10))
 ```
 
-This table is human-readable with blank space left in the 'Term' column, however, it isn't very machine-readable. To make it more useful, we need to fill in the blank spaces with the associated term. To do this, we can use the function fill_rows(), which is a verbatim copy of the same function in the topictagger package.
+This table is human-readable with blank space left in the 'Term' column, however, it isn't very machine-readable. To make it more useful, we need to fill in the blank spaces with the associated term. To do this, we can use the function fill_rows(), which is a verbatim copy of the same function in the <a href="https://github.com/elizagrames/topictagger">topictagger</a> package.
 
 ```{r}
 ontology <- fill_rows(ontology)
@@ -199,7 +199,7 @@ knitr::kable(head(ontology, 10))
 At this point, users should have 1) hypotheses associated with study metadata, and 2) an ontology defining synonyms (and potentially other groups). The remaining steps use that information to generate graphs representing study hypotheses, global graphs merging hypotheses across studies, and assemble studies in different ways to analyze the graphs (e.g. creating a cumulative time series of graphs or using sliding windows to explore trends). 
 
 ## 6.1. Data prep
-First, we need to clean up the pathways and get them in the format expected by packageName. This involves cleaning up the punctuation and replacing synonymous terms using the ontology. 
+First, we need to clean up the pathways and get them in the format expected by redyarn. This involves cleaning up the punctuation and replacing synonymous terms using the ontology. In our example, we have used ">" to represent implied causal relationships, and "+" as a shorthand for indicating that a group of variables share the same relationship to the variable(s) on the other end of the relationship. For example, instead of writing "patch size > bird abundance" and "distance to edge > bird abundance" we can write "patch size + distance to edge > bird abundance". When a single study has more than one implied causal pathway, we separated them by ";". 
 
 ```{r}
 # First, let's pull the pathways out of the main dataset
@@ -213,7 +213,12 @@ cleaned_paths <- clean_path(path=pathways,
                             sep=";")
 head(cleaned_paths)
 
-# Next, we need to use the ontology to replace synonymous terms
+```
+
+Now the punctuation and format of all our written pathways is standardized, but the terms used are not. One study may say 'nest success' and other 'nest survival' and we want to merge those into the same concept so that they are represented by a single node in the network. To do this, we use our ontology to group synonyms and replace them with a single term.
+
+```{r}
+# Use the ontology to replace synonymous terms
 merged_paths <- replace_terms(path=cleaned_paths, 
                               terms=ontology$Term, 
                               synonyms = ontology$Synonyms)
@@ -259,13 +264,13 @@ cumulative_year <- create_cumulative(graphs = study_graphs,
 
 # We could also pull out a graph for all studies with some shared characteristic
 # For example, a unified graph of all studies done in aspen-birch forests, which
-# we could compare to one done in 
+# we could compare to one done in maple-beech-birch
 aspen <- merge_graphs(study_graphs, by=studies$Forest.type=="aspen birch")
 maple <- merge_graphs(study_graphs, by=studies$Forest.type=="maple beech birch")
 
 ```
 
-We can then plot the graphs to visualize how hypotheses are related to each other. For example, the aspen network is shown below. Because everyone will want to visualize their networks differently, there are no plotting functions included in packageName. We suggest using igraph for static plots, or use visNetwork or tkplot to create interactive plots. If one of the end products is an interactive webpage with results of the network building, we recommend visNetwork; example code for the Shiny app created as part of our case study can be found at https://github.com/elizagrames/conceptual-models/. 
+We can then plot the graphs to visualize how hypotheses are related to each other. For example, the aspen network is shown below. Because everyone will want to visualize their networks differently, there are no plotting functions included in redyarn. We suggest using igraph for static plots, or use visNetwork or tkplot to create interactive plots. If one of the end products is an interactive webpage with results of the network building, we recommend visNetwork; example code for the Shiny app created as part of our case study can be found at https://github.com/elizagrames/conceptual-models/. 
 
 ```{r, echo=F, fig.width=8, fig.height=8}
 igraph::plot.igraph(
@@ -285,11 +290,13 @@ igraph::plot.igraph(
 
 ## 6.3. Analyze graphs
 
-Because we have represented the hypotheses from each study (or each year) as a network, there are many, many different analyses that could be done with it depending on the type of synthesis being done and the questions being addressed. There are a few simple analyses built into packageName, which we demonstrate below, but users should consider more sophisticated approaches and software that is dedicated solely to graph analysis (e.g. the igraph package). 
+Because we have represented the hypotheses from each study (or each year) as a network, there are many, many different analyses that could be done with it depending on the type of synthesis being done and the questions being addressed. There are a few simple analyses built into redyarn, which we demonstrate below, but users should consider more sophisticated approaches and software that is dedicated solely to graph analysis (e.g. the igraph package). 
+
+Note that some analyzes which depend on graphs being directed (e.g. transitive reduction) may not function as expected. Although hypotheses within a study should be internally consistent and form a directed acyclic graph (DAG), when individual study DAGs are combined, they may produce cycles or conflicting directions for causal relationships. 
 
 ### Dissimilarity
 
-The dissimilarity metric included in packageName is based on Schieber et al. (2017), which is based on topological differences between graphs. This can be useful when thinking about how the structure of the network changes over time.
+The dissimilarity metric included in redyarn is based on Schieber et al. (2017), which is based on topological differences between graphs. This can be useful when thinking about how the structure of the network changes over time. 
 
 ```{r}
 
@@ -311,7 +318,7 @@ plot(time_diss)
 
 ### Graph features
 
-Users may want to look at simple metrics like how the number of nodes (i.e. factors or concepts in the model) or edges (i.e. relationships between those concepts) change over time or other dimensions. There are two simple functions in packageName for doing this: one that calculates the number and identity of new features in a graph that are not in the comparison graph, and one that calculate the number and identity of shared features between two graphs.
+Users may want to look at simple metrics like how the number of nodes (i.e. factors or concepts in the model) or edges (i.e. relationships between those concepts) change over time or other dimensions. There are two simple functions in redyarn for doing this: one that calculates the number and identity of new features in a graph that are not in the comparison graph, and one that calculate the number and identity of shared features between two graphs.
 
 ```{r}
 
@@ -342,7 +349,7 @@ plot(cumulative_features$edges ~ seq(1975, 2020, 1), type="l", ylab="Network edg
 
 ### Node and edge characteristics
 
-In the network, the hypotheses are represented by concepts (nodes) and the relationships between them (edges). Assessing characteristics of the nodes and edges can be useful for determining which hypotheses are most important, how hypotheses have changed over time, etc. packageName includes a wrapper function to pull graph metrics for one or more graphs, including time series of graphs, using underlying functions from the igraph package. We can then visualize changes in graph metrics over time. There are many, many different ways users can approach analyzing graphs and the characteristics of nodes and edges, which we do not go into here. 
+In the network, the hypotheses are represented by concepts (nodes) and the relationships between them (edges). Assessing characteristics of the nodes and edges can be useful for determining which hypotheses are most important, how hypotheses have changed over time, etc. redyarn includes a wrapper function to pull graph metrics for one or more graphs, including time series of graphs, using underlying functions from the igraph package. We can then visualize changes in graph metrics over time. There are many, many different ways users can approach analyzing graphs and the characteristics of nodes and edges, which we do not go into here. 
 
 ```{r}
 
