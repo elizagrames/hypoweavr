@@ -6,3 +6,6 @@
 To install redyarn, use remotes::install_github("elizagrames/redyarn"). If you don't already have the remotes package installed, it can be installed from CRAN with install.packages("remotes"). 
 
 redyarn is a work in progress. Please send any comments, suggestions, or better-designed logos to Eliza Grames at egrames@unr.edu.
+
+
+The current redyarn vignette that walks through usage and functions can be found at <a href="https://elizagrames.github.io/redyarn/">https://elizagrames.github.io/redyarn/</a>
