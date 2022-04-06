@@ -1,4 +1,4 @@
-Package: redyarn
+Package: hypoweavr
 Type: Package
 Title: Graphical Synthesis and Analysis of Linked Hypotheses
 Version: 0.1.0
@@ -12,7 +12,7 @@ Authors@R: c(
 Description: Conceptual models are necessary to synthesize what is known
     about a topic, but the process of developing conceptual models based
     on hypotheses in the literature has high potential to be biased or
-    incomplete. redyarn implements a method to systematically extract
+    incomplete. hypoweavr implements a method to systematically extract
     hypotheses from the literature, merge them into a linked graph, and
     use network analyses to identify links between previously disconnected
     concepts, explore trends in thinking about a topic over time, or 

@@ -1,11 +1,7 @@
 ---
-title: "Building conceptual models with redyarn"
+title: "Building conceptual models with hypoweavr"
 author: "Eliza Grames"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{intro}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +12,7 @@ knitr::opts_knit$set(global.par = TRUE)
 
 ```{r, echo=FALSE}
 par(las=1, pty="s", bty="n", pch=16, lwd=2)
-library(redyarn)
+library(hypoweavr)
 ```
 
 
@@ -31,14 +27,14 @@ blockquote {
 }
 ```
 
-## redyarn
+## hypoweavr
 
-<img src="../inst/images/redyarn-logo.png" alt="redyarn hex logo" align="left" style="height: 200px; width:auto;"/> redyarn is an R package that takes hypotheses from different studies and synthesizes them through a graphical analysis. Why is it called redyarn? Because it essentially does the same thing that conspiracy theorists do in television shows: take lots of seemingly disconnected ideas and string them together (with pieces of red yarn) to reach an epiphany.
+<img src="../inst/images/hypoweavr-logo.png" alt="hypoweavr hex logo" align="left" style="height: 200px; width:auto;"/> hypoweavr is an R package that takes hypotheses from different studies and synthesizes them through a graphical analysis. 
 <br>
 
-To install redyarn, use remotes::install_github("elizagrames/redyarn"). If you don't already have the remotes package installed, it can be installed from CRAN with install.packages("remotes"). 
+To install hypoweavr, use remotes::install_github("elizagrames/hypoweavr"). If you don't already have the remotes package installed, it can be installed from CRAN with install.packages("remotes"). 
 
-redyarn is a work in progress. Please send any comments, suggestions, or better-designed logos to Eliza Grames at egrames@unr.edu.
+hypoweavr is a work in progress. Please send any comments, suggestions, or better-designed logos to Eliza Grames at egrames@unr.edu.
 
 ## 1. Conduct a systematic review
 
@@ -72,7 +68,7 @@ The primary complication for extracting hypotheses from primary studies is that 
 
 Because extracting pathways depends on interpreting how authors have described primary studies, there is no single solution for how to extract implied causal pathways and each user could do it slightly differently. Indeed, the same user could extract pathways slightly differently each time when reading a study, however, the main hypothesis structure should generally be the same. We present several examples for the three main ways authors describe their hypotheses based on what we found in our case study; this is by no means an exhaustive list and is meant to be illustrative to help users think of how they might extract hypotheses for their own synthesis topics. In most cases, implied hypotheses will be sprinkled throughout the introduction, methods, and results sections.
 
-In our examples, we include a directed acyclic graph (DAG) representing the hypotheses from each study. It is not necessary to draw these for each study when implementing this approach. The only data that redyarn requires for the paths is to have them represented with text, e.g. "patch size + distance to edge &#10142; bird abundance".
+In our examples, we include a directed acyclic graph (DAG) representing the hypotheses from each study. It is not necessary to draw these for each study when implementing this approach. The only data that hypoweavr requires for the paths is to have them represented with text, e.g. "patch size + distance to edge &#10142; bird abundance".
 
 #### Richmond et al. 2011
 
@@ -157,7 +153,7 @@ It may be of interest to users to create multi-dimensional networks that include
 
 Note that this step is optional, but resulting networks are more interesting and additional analyses can be done with metadata that may covary with which hypotheses are studied. Users should consider what metadata they would like to use as covariates when designing their synthesis.
 
-The hypotheses and study metadata for our case study from Grames (2021) are pre-loaded in redyarn as an example. We will load this dataset in with the code below so they are in our working environment, then look at the first few rows of the data. 
+The hypotheses and study metadata for our case study from Grames (2021) are pre-loaded in hypoweavr as an example. We will load this dataset in with the code below so they are in our working environment, then look at the first few rows of the data. 
 
 ```{r}
 load("../data/studies.rda")
@@ -199,7 +195,7 @@ knitr::kable(head(ontology, 10))
 At this point, users should have 1) hypotheses associated with study metadata, and 2) an ontology defining synonyms (and potentially other groups). The remaining steps use that information to generate graphs representing study hypotheses, global graphs merging hypotheses across studies, and assemble studies in different ways to analyze the graphs (e.g. creating a cumulative time series of graphs or using sliding windows to explore trends). 
 
 ## 6.1. Data prep
-First, we need to clean up the pathways and get them in the format expected by redyarn. This involves cleaning up the punctuation and replacing synonymous terms using the ontology. In our example, we have used ">" to represent implied causal relationships, and "+" as a shorthand for indicating that a group of variables share the same relationship to the variable(s) on the other end of the relationship. For example, instead of writing "patch size > bird abundance" and "distance to edge > bird abundance" we can write "patch size + distance to edge > bird abundance". When a single study has more than one implied causal pathway, we separated them by ";". 
+First, we need to clean up the pathways and get them in the format expected by hypoweavr. This involves cleaning up the punctuation and replacing synonymous terms using the ontology. In our example, we have used ">" to represent implied causal relationships, and "+" as a shorthand for indicating that a group of variables share the same relationship to the variable(s) on the other end of the relationship. For example, instead of writing "patch size > bird abundance" and "distance to edge > bird abundance" we can write "patch size + distance to edge > bird abundance". When a single study has more than one implied causal pathway, we separated them by ";". 
 
 ```{r}
 # First, let's pull the pathways out of the main dataset
@@ -270,7 +266,7 @@ maple <- merge_graphs(study_graphs, by=studies$Forest.type=="maple beech birch")
 
 ```
 
-We can then plot the graphs to visualize how hypotheses are related to each other. For example, the aspen network is shown below. Because everyone will want to visualize their networks differently, there are no plotting functions included in redyarn. We suggest using igraph for static plots, or use visNetwork or tkplot to create interactive plots. If one of the end products is an interactive webpage with results of the network building, we recommend visNetwork; example code for the Shiny app created as part of our case study can be found at https://github.com/elizagrames/conceptual-models/. 
+We can then plot the graphs to visualize how hypotheses are related to each other. For example, the aspen network is shown below. Because everyone will want to visualize their networks differently, there are no plotting functions included in hypoweavr. We suggest using igraph for static plots, or use visNetwork or tkplot to create interactive plots. If one of the end products is an interactive webpage with results of the network building, we recommend visNetwork; example code for the Shiny app created as part of our case study can be found at https://github.com/elizagrames/conceptual-models/. 
 
 ```{r, echo=F, fig.width=8, fig.height=8}
 igraph::plot.igraph(
@@ -290,13 +286,13 @@ igraph::plot.igraph(
 
 ## 6.3. Analyze graphs
 
-Because we have represented the hypotheses from each study (or each year) as a network, there are many, many different analyses that could be done with it depending on the type of synthesis being done and the questions being addressed. There are a few simple analyses built into redyarn, which we demonstrate below, but users should consider more sophisticated approaches and software that is dedicated solely to graph analysis (e.g. the igraph package). 
+Because we have represented the hypotheses from each study (or each year) as a network, there are many, many different analyses that could be done with it depending on the type of synthesis being done and the questions being addressed. There are a few simple analyses built into hypoweavr, which we demonstrate below, but users should consider more sophisticated approaches and software that is dedicated solely to graph analysis (e.g. the igraph package). 
 
 Note that some analyzes which depend on graphs being directed (e.g. transitive reduction) may not function as expected. Although hypotheses within a study should be internally consistent and form a directed acyclic graph (DAG), when individual study DAGs are combined, they may produce cycles or conflicting directions for causal relationships. 
 
 ### Dissimilarity
 
-The dissimilarity metric included in redyarn is based on Schieber et al. (2017), which is based on topological differences between graphs. This can be useful when thinking about how the structure of the network changes over time. 
+The dissimilarity metric included in hypoweavr is based on Schieber et al. (2017), which is based on topological differences between graphs. This can be useful when thinking about how the structure of the network changes over time. 
 
 ```{r}
 
@@ -318,7 +314,7 @@ plot(time_diss)
 
 ### Graph features
 
-Users may want to look at simple metrics like how the number of nodes (i.e. factors or concepts in the model) or edges (i.e. relationships between those concepts) change over time or other dimensions. There are two simple functions in redyarn for doing this: one that calculates the number and identity of new features in a graph that are not in the comparison graph, and one that calculate the number and identity of shared features between two graphs.
+Users may want to look at simple metrics like how the number of nodes (i.e. factors or concepts in the model) or edges (i.e. relationships between those concepts) change over time or other dimensions. There are two simple functions in hypoweavr for doing this: one that calculates the number and identity of new features in a graph that are not in the comparison graph, and one that calculate the number and identity of shared features between two graphs.
 
 ```{r}
 
@@ -349,7 +345,7 @@ plot(cumulative_features$edges ~ seq(1975, 2020, 1), type="l", ylab="Network edg
 
 ### Node and edge characteristics
 
-In the network, the hypotheses are represented by concepts (nodes) and the relationships between them (edges). Assessing characteristics of the nodes and edges can be useful for determining which hypotheses are most important, how hypotheses have changed over time, etc. redyarn includes a wrapper function to pull graph metrics for one or more graphs, including time series of graphs, using underlying functions from the igraph package. We can then visualize changes in graph metrics over time. There are many, many different ways users can approach analyzing graphs and the characteristics of nodes and edges, which we do not go into here. 
+In the network, the hypotheses are represented by concepts (nodes) and the relationships between them (edges). Assessing characteristics of the nodes and edges can be useful for determining which hypotheses are most important, how hypotheses have changed over time, etc. hypoweavr includes a wrapper function to pull graph metrics for one or more graphs, including time series of graphs, using underlying functions from the igraph package. We can then visualize changes in graph metrics over time. There are many, many different ways users can approach analyzing graphs and the characteristics of nodes and edges, which we do not go into here. 
 
 ```{r}
 

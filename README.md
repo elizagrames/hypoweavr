@@ -1,11 +1,11 @@
-# redyarn: an R package for graphical synthesis and analysis of linked hypotheses
+# hypoweavr: an R package for graphical synthesis and analysis of linked hypotheses
 
-<img src="./inst/images/redyarn-logo.png" alt="redyarn hex logo" align="right" style="height: 200px; width:auto;"/> redyarn is an R package that takes hypotheses from different studies and synthesizes them through a graphical analysis. Why is it called redyarn? Because it essentially does the same thing that conspiracy theorists do in television shows: take lots of seemingly disconnected ideas and string them together (with pieces of red yarn) to reach an epiphany.
+<img src="./inst/images/hypoweavr-logo.png" alt="hypoweavr hex logo" align="right" style="height: 200px; width:auto;"/> hypoweavr is an R package that takes hypotheses from different studies and synthesizes them through a graphical analysis. 
 <br>
 
-To install redyarn, use remotes::install_github("elizagrames/redyarn"). If you don't already have the remotes package installed, it can be installed from CRAN with install.packages("remotes"). 
+To install hypoweavr, use remotes::install_github("elizagrames/hypoweavr"). If you don't already have the remotes package installed, it can be installed from CRAN with install.packages("remotes"). 
 
-redyarn is a work in progress. Please send any comments, suggestions, or better-designed logos to Eliza Grames at egrames@unr.edu.
+hypoweavr is a work in progress. Please send any comments, suggestions, or better-designed logos to Eliza Grames at egrames@unr.edu.
 
 
-The current redyarn vignette that walks through usage and functions can be found at <a href="https://elizagrames.github.io/redyarn/">https://elizagrames.github.io/redyarn/</a>
+The current hypoweavr vignette that walks through usage and functions can be found at <a href="https://elizagrames.github.io/hypoweavr/">https://elizagrames.github.io/hypoweavr/</a>
