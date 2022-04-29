@@ -17,5 +17,7 @@ graph_metrics(x, metric = "page_rank", return.df = FALSE)
 Given a graph, calculates node and edge metrics using functions from the igraph package
 }
 \details{
-optional metrics: page_rank, edge_betweenness, strength, alpha_centrality, FILL IN MORE OF THESE LATER. See igraph help pages for details on each function.
+optional metrics: page_rank, edge_betweenness, strength, alpha_centrality.
+See igraph help pages for details on each function.
+Note that if using edge betweenness, the inverse weight of the edges will be used.
 }

@@ -531,19 +531,21 @@ shared_features <- function(x, y=NULL, return="counts"){
 #' @param x a graph object or list of graphs
 #' @param metric a string indicating which metric to use; see details for options
 #' @param return.df logical; should a list of metrics be returned or a unified data frame
-#' @details optional metrics: page_rank, edge_betweenness, strength, alpha_centrality, FILL IN MORE OF THESE LATER. See igraph help pages for details on each function.
+#' @details optional metrics: page_rank, edge_betweenness, strength, alpha_centrality.
+#' See igraph help pages for details on each function.
+#' Note that if using edge betweenness, the inverse weight of the edges will be used.
 graph_metrics <- function(x, metric="page_rank", return.df=FALSE){
   subfunc <- function(z){
     if(class(z)=="igraph"){
       if(metric%in%c("page_rank", "eigen_centrality", "page.rank")){
         tmp <- eval(as.name(metric))(z)$vector
+      }else if(metric%in%c("edge.betweenness", "edge_betweenness")){
+        tmp <- igraph::edge.betweenness(z, weights=1/igraph::E(z)$weight)
+        names(tmp) <- attr(igraph::E(z), "vnames")
       }else{
         tmp <- eval(as.name(metric))(z)
       }
 
-      if(metric%in%c("edge.betweenness", "edge_betweenness")){
-        names(tmp) <- attr(igraph::E(z), "vnames")
-      }
       return(tmp)
 
     }else{
