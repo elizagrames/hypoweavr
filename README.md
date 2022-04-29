@@ -8,4 +8,4 @@ To install hypoweavr, use remotes::install_github("elizagrames/hypoweavr"). If y
 hypoweavr is a work in progress. Please send any comments, suggestions, or better-designed logos to Eliza Grames at egrames@unr.edu.
 
 
-The current hypoweavr vignette that walks through usage and functions can be found at <a href="https://elizagrames.github.io/hypoweavr/">https://elizagrames.github.io/hypoweavr/</a>
+The current hypoweavr vignette that walks through usage and functions can be found at <a href="https://elizagrames.github.io/hypoweavr/">https://elizagrames.github.io/hypoweavr/</a>.
