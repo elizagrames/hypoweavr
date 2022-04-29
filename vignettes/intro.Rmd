@@ -22,7 +22,7 @@ blockquote {
     margin: 0 0 20px;
     font-size: 14px;
   color: black;
-  background-color: #006e6d88;
+  background-color: #61537e88;
     border-left: 5px solid #eee;
 }
 ```
