@@ -156,7 +156,7 @@ Note that this step is optional, but resulting networks are more interesting and
 The hypotheses and study metadata for our case study from Grames (2021) are pre-loaded in hypoweavr as an example. We will load this dataset in with the code below so they are in our working environment, then look at the first few rows of the data. 
 
 ```{r}
-load("../data/studies.rda")
+data("studies")
 knitr::kable(head(studies, 3))
 ```
 
@@ -179,7 +179,7 @@ Although users could create the higher levels of an ontology in advance based on
 In our case study (Grames 2021), we only created an ontology for synonyms or related terms and did not group them into higher levels.
 
 ```{r}
-load("../data/ontology.rda")
+data("ontology")
 knitr::kable(head(ontology, 10))
 ```
 
